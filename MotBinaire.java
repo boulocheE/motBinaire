@@ -1,3 +1,6 @@
+import java.util.Arrays;
+
+
 public class MotBinaire
 {
 	private int[] mot;
@@ -12,13 +15,13 @@ public class MotBinaire
 	{
 		int cpt = 0;
 
-		this.mot = new int[other.mot.length];
+		this.mot = new int[other.nbBits()];
 
 		for ( int i : other.mot ) this.mot[cpt++] = i;
 	}
 
 
-	public MotBinaire fabrique( int[] mot )
+	public static MotBinaire fabrique( int[] mot )
 	{
 		int[] tabMot;
 		int   cpt = 0;
@@ -32,13 +35,11 @@ public class MotBinaire
 			tabMot[cpt++] = i;
 		}
 
-		new MotBinaire(tabMot);
-
-		return this;
+		return new MotBinaire(tabMot);
 	}
 
 
-	public MotBinaire fabrique ( String mot )
+	public static MotBinaire fabrique ( String mot )
 	{
 		int[] tabMot;
 
@@ -51,9 +52,66 @@ public class MotBinaire
 			tabMot[cpt] = Integer.parseInt( mot.charAt(cpt) + "");
 		}
 
-		new MotBinaire(tabMot);
-
-		return this;
+		return new MotBinaire(tabMot);
 	}
+
+
+	public MotBinaire addition (MotBinaire a, MotBinaire b)
+	{
+		int[] tabMot;
+
+		if ( a.nbBits() != b.nbBits() ) return null;
+
+		tabMot = new int[a.nbBits()];
+
+		for ( int cpt = 0; cpt < tabMot.length; cpt ++ )
+			tabMot[cpt] = a.mot[cpt] + b.mot[cpt] == 2 ? 0 : a.mot[cpt] + b.mot[cpt];
+
+		return new MotBinaire(tabMot);
+	}
+
+
+	public int poids ()
+	{
+		int poids = 0;
+
+		for ( int i : this.mot )
+			if ( i == 1 ) poids ++;
+
+		return poids;
+	}
+
+
+	public int nbBits () { return mot.length; }
+
+
+	public int distance ( MotBinaire other )
+	{
+		MotBinaire addition = this.addition(this, other);
+
+		if ( addition == null ) return -1;
+
+		return this.addition(this, other).poids();
+	}
+
+
+	public MotBinaire sousMot ( int deb, int fin )
+	{
+		int[] tabMot;
+
+		tabMot = new int[fin - deb];
+
+		for ( int cpt = deb; cpt <= fin; cpt ++ )
+			tabMot[cpt] = this.mot[cpt];
+
+		return MotBinaire.fabrique(tabMot);
+	}
+
+
+	public int  get(int i         ) { return this.mot[i];              }
+	public void set(int i, int bit) { if (bit == 1) this.mot[i] = bit; }
+
+
+	public String toString () { return Arrays.toString(this.mot); }
 
 }
