@@ -62,6 +62,7 @@ public class MotBinaire
 	{
 		int[] tabMot;
 
+		if ( a == null  || b == null  ) return null;
 		if ( a.nbBits() != b.nbBits() ) return null;
 
 		tabMot = new int[a.nbBits()];
@@ -101,6 +102,8 @@ public class MotBinaire
 	{
 		int[] tabMot;
 
+		if ( deb < 0 || deb >= this.nbBits() || fin < 0 || fin >= this.nbBits() ) return -1;
+
 		tabMot = new int[fin - deb];
 
 		for ( int cpt = deb; cpt <= fin; cpt ++ )
@@ -110,8 +113,18 @@ public class MotBinaire
 	}
 
 
-	public int  get(int i         ) { return this.mot[i];              }
-	public void set(int i, int bit) { if (bit == 1) this.mot[i] = bit; }
+	public int  get(int i         )
+	{
+		if ( i < 0 || i >= this.nbBits() ) return -1;
+
+		return this.mot[i];
+	}
+
+	public void set(int i, int bit)
+	{
+		if (bit == 1 && i >= 0 && i < this.nbBits()) 
+			this.mot[i] = bit;
+	}
 
 
 	public String toString () { return Arrays.toString(this.mot); }
@@ -149,6 +162,131 @@ public class MotBinaire
 		for ( int i = 0; i < tab.length; i ++ ) tab[i] = MotBinaire.fabrique(tabListeMots[i]);
 
 		return tab;
+	}
+
+
+	public static void main(String[] a)
+	{
+		MotBinaire test1 = fabrique("001");
+		MotBinaire test2 = fabrique(new int[] {1,0,0, 1});
+		MotBinaire test3 = new MotBinaire(test2);
+		MotBinaire test4 = fabrique("dfgh");
+
+		System.out.println( "|-------------------------------|" );
+		System.out.println( "|    Test création des MOTS     |" );
+		System.out.println( "|-------------------------------|" );
+
+		System.out.println( "TEST 1 : " + test1 );
+		System.out.println( "TEST 2 : " + test2 );
+		System.out.println( "TEST 3 : " + test3 );
+		System.out.println( "TEST 4 : " + test4 );
+
+
+		System.out.println();
+
+
+		System.out.println( "|-------------------------------|" );
+		System.out.println( "|         Test des POIDS        |" );
+		System.out.println( "|-------------------------------|" );
+
+		System.out.println( "TEST 1 : " + test1.poids() );
+		System.out.println( "TEST 2 : " + test2.poids() );
+		System.out.println( "TEST 3 : " + test3.poids() );
+
+
+		System.out.println();
+
+
+		System.out.println( "|-------------------------------|" );
+		System.out.println( "|        Test des DISTANCE      |" );
+		System.out.println( "|-------------------------------|" );
+
+		System.out.println( "TEST 1 → 2 : " + test1.distance(test1) );
+		System.out.println( "TEST 2 → 3 : " + test2.distance(test2) );
+		System.out.println( "TEST 3 → 1 : " + test3.distance(test3) );
+		System.out.println( "TEST 2 → 1 : " + test1.distance(test2) );
+		System.out.println( "TEST 3 → 2 : " + test2.distance(test3) );
+		System.out.println( "TEST 1 → 3 : " + test3.distance(test1) );
+
+
+		System.out.println();
+
+
+		System.out.println( "|-------------------------------|" );
+		System.out.println( "|        Test de la TAILLE      |" );
+		System.out.println( "|-------------------------------|" );
+
+		System.out.println( "TEST 1 : " + test1.nbBits() );
+		System.out.println( "TEST 2 : " + test2.nbBits() );
+		System.out.println( "TEST 3 : " + test3.nbBits() );
+
+
+		System.out.println( test1.nbBits() );
+
+
+		System.out.println( "|-------------------------------|" );
+		System.out.println( "|       Test des SOUS-MOTS      |" );
+		System.out.println( "|-------------------------------|" );
+
+		System.out.println( "TEST 0 à 0 : " + test2.sousMot(0, 0) );
+		System.out.println( "TEST 0 à 2 : " + test1.sousMot(0, 2) );
+		System.out.println( "TEST 0 à 3 : " + test3.sousMot(0, 3) );
+		System.out.println( "TEST 0 à 4 : " + test3.sousMot(0, 4) );
+		System.out.println( "TEST 1 à 0 : " + test2.sousMot(1, 0) );
+		System.out.println( "TEST 1 à 2 : " + test2.sousMot(1, 2) );
+		System.out.println( "TEST 1 à 3 : " + test3.sousMot(1, 3) );
+		System.out.println( "TEST 1 à 4 : " + test3.sousMot(1, 4) );
+
+
+		System.out.println( "|-------------------------------|" );
+		System.out.println( "|           Test de GET         |" );
+		System.out.println( "|-------------------------------|" );
+
+		System.out.print( "TEST 1\t :" );
+		for ( int i = 0; i < test1.nbBits(); i ++ )
+			System.out.print( i + " : " + test1.get(i) );
+
+		System.out.print( "TEST 2\t :" );
+		for ( int i = 0; i < test2.nbBits(); i ++ )
+			System.out.print( i + " : " + test1.get(i) );
+
+		System.out.print( "TEST 3\t :" );
+		for ( int i = 0; i < test3.nbBits(); i ++ )
+			System.out.print( i + " : " + test1.get(i) );
+
+
+		System.out.println();
+
+
+		System.out.println( "|-------------------------------|" );
+		System.out.println( "|           Test de SET         |" );
+		System.out.println( "|-------------------------------|" );
+
+		System.out.print( "TEST 1 : \t avant - " + test1 + "\taprès" );
+		test1.set(0, 1);
+		System.out.print( test1 + "\n" );
+
+		System.out.print( "TEST 2 : \t avant - " + test1 + "\taprès" );
+		test1.set(0, 6);
+		System.out.print( test1 + "\n" );
+
+		System.out.print( "TEST 3 : \t avant - " + test1 + "\taprès" );
+		test1.set(5, 6);
+		System.out.print( test1 + "\n" );
+
+
+		System.out.println();
+
+
+		System.out.println( "|-------------------------------|" );
+		System.out.println( "|          Test TOSTRING        |" );
+		System.out.println( "|-------------------------------|" );
+
+		System.out.println( "TEST 1 : " + test1 );
+		System.out.println( "TEST 2 : " + test2 );
+		System.out.println( "TEST 3 : " + test3 );
+		System.out.println( "TEST 4 : " + test4 );
+
 	}
 
 }
