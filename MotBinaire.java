@@ -102,7 +102,7 @@ public class MotBinaire
 	{
 		int[] tabMot;
 
-		if ( deb < 0 || deb >= this.nbBits() || fin < 0 || fin >= this.nbBits() ) return -1;
+		if ( deb < 0 || deb >= this.nbBits() || fin < 0 || fin >= this.nbBits() ) return null;
 
 		tabMot = new int[fin - deb];
 
