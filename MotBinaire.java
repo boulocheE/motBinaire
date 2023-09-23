@@ -100,19 +100,17 @@ public class MotBinaire
 
 	public MotBinaire sousMot ( int deb, int fin )
 	{
-		int[] tabMot;
-		int   tmp;
+		String res = "";
 
 		if ( deb == fin ) return null;
 		if ( deb >  fin ) return null;
 		if ( deb < 0 || deb >= this.nbBits() || fin < 0 || fin >= this.nbBits() ) return null;
 
-		tabMot = new int[fin - deb];
 
 		for ( int cpt = deb; cpt < fin; cpt ++ )
-			tabMot[cpt] = this.mot[cpt];
+			res += this.mot[cpt];
 
-		return MotBinaire.fabrique(tabMot);
+		return MotBinaire.fabrique(res);
 	}
 
 
@@ -132,14 +130,18 @@ public class MotBinaire
 
 	public String toString () { return Arrays.toString(this.mot); }
 
-	// public boolean equals(Object other)
-	// {
-	// 	if ( other == null ) return false;
+	public boolean equals(Object other)
+	{
+		if ( other == null                   ) return false;
+		if ( !( other instanceof MotBinaire) ) return false;
 
-	// 	if ( other.nbBits() != this.nbBits() ) return false;
+		if ( ((MotBinaire) other).nbBits() != this.nbBits() ) return false;
 
-	// 	return true;
-	// }
+		for ( int cpt = 0; cpt < this.nbBits(); cpt ++ )
+			if ( ((MotBinaire) other).get(cpt) != this.mot[cpt] ) return false;
+
+		return true;
+	}
 
 	public static MotBinaire[] genererMots(int n)
 	{
@@ -174,6 +176,9 @@ public class MotBinaire
 		MotBinaire test2 = fabrique(new int[] {1,0,0, 1});
 		MotBinaire test3 = new MotBinaire(test2);
 		MotBinaire test4 = fabrique("dfgh");
+
+		MotBinaire[] mots2 = genererMots(2);
+		MotBinaire[] mots3 = genererMots(3);
 
 		System.out.println( "|-------------------------------|" );
 		System.out.println( "|    Test création des MOTS     |" );
@@ -241,6 +246,9 @@ public class MotBinaire
 		System.out.println( "TEST 1 à 4 : " + test3.sousMot(1, 4) );
 
 
+		System.out.println();
+
+
 		System.out.println( "|-------------------------------|" );
 		System.out.println( "|           Test de GET         |" );
 		System.out.println( "|-------------------------------|" );
@@ -249,11 +257,11 @@ public class MotBinaire
 		for ( int i = 0; i < test1.nbBits(); i ++ )
 			System.out.print( i + " : " + test1.get(i) );
 
-		System.out.print( "TEST 2\t :" );
+		System.out.print( "\nTEST 2\t :" );
 		for ( int i = 0; i < test2.nbBits(); i ++ )
 			System.out.print( i + " : " + test1.get(i) );
 
-		System.out.print( "TEST 3\t :" );
+		System.out.print( "\nTEST 3\t :" );
 		for ( int i = 0; i < test3.nbBits(); i ++ )
 			System.out.print( i + " : " + test1.get(i) );
 
@@ -290,6 +298,34 @@ public class MotBinaire
 		System.out.println( "TEST 3 : " + test3 );
 		System.out.println( "TEST 4 : " + test4 );
 
+
+		System.out.println();
+
+
+		System.out.println( "|-------------------------------|" );
+		System.out.println( "|           Test EQUALS         |" );
+		System.out.println( "|-------------------------------|" );
+
+		System.out.println( "TEST 1 → 1 : " + test1.equals(test1) );
+		System.out.println( "TEST 2 → 1 : " + test2.equals(test1) );
+		System.out.println( "TEST 1 → 2 : " + test1.equals(test2) );
+		System.out.println( "TEST 3 → 4 : " + test3.equals(test4) );
+
+
+		System.out.println();
+
+
+		System.out.println( "|-------------------------------|" );
+		System.out.println( "|        Test GENERERMOTS       |" );
+		System.out.println( "|-------------------------------|" );
+
+		System.out.print( "TEST 1 - 2 bits : " );
+		for ( MotBinaire m : mots2 ) System.out.print( m + "\t" );
+
+		System.out.println();
+
+		System.out.print( "TEST 2 - 3 bits : " );
+		for ( MotBinaire m : mots3 ) System.out.print( m + "\t" );
 	}
 
 }
