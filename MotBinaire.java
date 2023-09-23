@@ -101,12 +101,15 @@ public class MotBinaire
 	public MotBinaire sousMot ( int deb, int fin )
 	{
 		int[] tabMot;
+		int   tmp;
 
+		if ( deb == fin ) return null;
+		if ( deb >  fin ) return null;
 		if ( deb < 0 || deb >= this.nbBits() || fin < 0 || fin >= this.nbBits() ) return null;
 
 		tabMot = new int[fin - deb];
 
-		for ( int cpt = deb; cpt <= fin; cpt ++ )
+		for ( int cpt = deb; cpt < fin; cpt ++ )
 			tabMot[cpt] = this.mot[cpt];
 
 		return MotBinaire.fabrique(tabMot);
@@ -221,7 +224,7 @@ public class MotBinaire
 		System.out.println( "TEST 3 : " + test3.nbBits() );
 
 
-		System.out.println( test1.nbBits() );
+		System.out.println();
 
 
 		System.out.println( "|-------------------------------|" );
